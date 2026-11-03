@@ -83,7 +83,7 @@ dl{display:grid;grid-template-columns:auto 1fr;gap:8px 24px;margin:20px 0;font-s
 <label>Buyer profile<select name="b"><option>Investor</option><option>Business Owner</option><option>Restaurant Operator</option><option>Retail Brand</option><option>Other</option></select></label>
 <label class="full">Preferred contact time<input name="t" placeholder="e.g. weekdays after 4 pm"></label><input class="hp" name="w" tabindex="-1" autocomplete="off" aria-hidden="true">
 <div class="full"><button class="btn" type="submit">Request a call back</button><p id="er" role="alert" style="color:#9a3b2e;margin-top:12px;font-size:14px"></p></div></form>
-<div class="ok" id="ok" role="status"><h3>Thank you.</h3><p>Your WhatsApp message is ready to send to our property team. Once sent, we will call you back to arrange a private consultation.</p></div></div></div></section>
+<div class="ok" id="ok" role="status"><h3>Thank you.</h3><p>Your enquiry has been received successfully. Our property team will contact you shortly to arrange a private consultation. Once sent, we will call you back to arrange a private consultation.</p></div></div></div></section>
 <section class="fin" style="padding:140px 24px"><div style="margin:auto"><h2>Discover Your Place in Mivida Boulevard.</h2><p>Explore the available commercial properties and arrange a private consultation with our team.</p><a class="btn" href="#enquire">Register your interest</a></div></section>
 </main>
 <footer><div class="wrap"><div class="fg"><div><b>MIVIDA BOULEVARD — COMMERCIAL PROPERTIES</b><p style="margin-top:12px">Maqtani Estates<br>New Cairo, Egypt<br><a href="tel:+201010333215">+20 101 033 3215</a></p></div><div><a href="#units">Units</a><a href="#combined">Combined units</a><a href="#location">Location</a><a href="#enquire">Enquire</a></div><div><a href="#privacy" id="pv">Privacy Policy</a><p id="privacy" style="font-size:12px;display:none;margin-top:8px">Details you submit are used only to contact you about these properties and are not shared publicly.</p></div></div><div class="cp">© 2026 Maqtani Estates. All rights reserved. Mivida is a project by Emaar Misr.</div></div></footer>
@@ -109,8 +109,90 @@ const us=document.getElementById('us');function pick(v){[...us.options].forEach(
 document.querySelector('[data-pick]').onclick=()=>{us.value="Combined restaurant space — 747 sqm"};
 const nv=document.getElementById('nav');addEventListener('scroll',()=>nv.classList.toggle('s',scrollY>60),{passive:true});
 document.getElementById('pv').onclick=e=>{e.preventDefault();const p=document.getElementById('privacy');p.style.display=p.style.display?'':'block'};
-const f=document.getElementById('f');f.onsubmit=e=>{e.preventDefault();const d=new FormData(f);if(d.get('w'))return;const er=document.getElementById('er');
-const n=d.get('n').trim(),m=d.get('m').trim();if(n.length<2||m.replace(/\D/g,'').length<8){er.textContent='Enter your full name and a valid mobile number.';return}er.textContent='';
-const t=`Mivida Boulevard enquiry%0AName: ${n}%0AMobile: ${m}%0AEmail: ${d.get('e')||'-'}%0AUnit: ${d.get('u')}%0AProfile: ${d.get('b')}%0APreferred time: ${d.get('t')||'-'}`;
-f.style.display='none';document.getElementById('ok').style.display='block';window.open('https://wa.me/201010333215?text='+encodeURIComponent(decodeURIComponent(t)),'_blank','noopener')};
+
+const LEADS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwGFMdbxh8phtsL8WInV8tKoCj_x_vJ0yF7pRTBUd85mKfr7U0n0ibEaj3o2TzQwSdkMg/exec";
+
+const f = document.getElementById('f');
+const er = document.getElementById('er');
+const ok = document.getElementById('ok');
+
+const leadFrame = document.createElement('iframe');
+leadFrame.name = 'mividaLeadFrame';
+leadFrame.title = 'Lead submission';
+leadFrame.style.display = 'none';
+document.body.appendChild(leadFrame);
+
+let leadSubmissionPending = false;
+
+window.addEventListener('message', function(event) {
+  const result = event.data;
+
+  if (!result || result.type !== 'MIVIDA_LEAD_RESULT') return;
+  if (!leadSubmissionPending) return;
+
+  leadSubmissionPending = false;
+
+  const button = f.querySelector('button[type="submit"]');
+  button.disabled = false;
+  button.textContent = 'Request a call back';
+
+  if (result.success === true) {
+    f.style.display = 'none';
+    ok.style.display = 'block';
+  } else {
+    er.textContent = 'We could not save your enquiry. Please try again.';
+  }
+});
+
+f.onsubmit = function(e) {
+  e.preventDefault();
+
+  if (leadSubmissionPending) return;
+
+  const d = new FormData(f);
+
+  if (d.get('w')) return;
+
+  const n = String(d.get('n') || '').trim();
+  const m = String(d.get('m') || '').trim();
+
+  if (n.length < 2 || m.replace(/\D/g, '').length < 8) {
+    er.textContent = 'Enter your full name and a valid mobile number.';
+    return;
+  }
+
+  er.textContent = '';
+
+  const params = new URLSearchParams(window.location.search);
+
+  function setHidden(name, value) {
+    let input = f.querySelector('input[name="' + name + '"]');
+
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      f.appendChild(input);
+    }
+
+    input.value = value;
+  }
+
+  setHidden('source', params.get('utm_source') || 'Website');
+  setHidden('campaign', params.get('utm_campaign') || '');
+  setHidden('gclid', params.get('gclid') || '');
+
+  leadSubmissionPending = true;
+
+  const button = f.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Submitting...';
+
+  f.method = 'POST';
+  f.action = LEADS_ENDPOINT;
+  f.target = leadFrame.name;
+
+  HTMLFormElement.prototype.submit.call(f);
+};
+
 </script></body></html>
