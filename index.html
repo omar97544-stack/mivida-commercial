@@ -135,15 +135,15 @@ dl{display:grid;grid-template-columns:auto 1fr;gap:8px 24px;margin:20px 0;font-s
 <section class="combo" id="combined"><div class="wrap">
   <div class="head"><h2>More Space. Greater Possibilities.</h2><p>Adjacent units can be acquired together.</p></div>
   <div class="cg">
-    <div class="cc"><div class="cat" style="color:var(--go)">Restaurant opportunity</div><h3 class="num">Combined restaurant space</h3><div class="big num">747 sqm</div><p>Units G-05 and G-06, combined gross area. Suitable for larger restaurant and food &amp; beverage concepts.</p><a class="btn" href="#enquire" data-pick="Combined restaurant space — 747 sqm">Discuss this combination</a></div>
-    <div class="cc"><div class="cat" style="color:var(--go)">Retail opportunity</div><h3 class="num">Combined retail space</h3><div class="big num">433 sqm</div><p>Units G-09 and G-10, combined gross area. Suitable for larger retail and commercial concepts.</p><a class="btn" href="#enquire" data-pick="Combined retail space — 433 sqm">Discuss this combination</a></div>
+    <div class="cc"><div class="cat" style="color:var(--go)">Restaurant opportunity</div><h3 class="num">Combined restaurant space</h3><div class="big num">747 sqm</div><p>Two adjacent restaurant units (396 + 351 sqm), combined gross area. Suitable for larger restaurant and food &amp; beverage concepts.</p><a class="btn" href="#enquire" data-pick="Combined restaurant space — 747 sqm">Discuss this combination</a></div>
+    <div class="cc"><div class="cat" style="color:var(--go)">Retail opportunity</div><h3 class="num">Combined retail space</h3><div class="big num">433 sqm</div><p>Two adjacent retail units (224 + 209 sqm), combined gross area. Suitable for larger retail and commercial concepts.</p><a class="btn" href="#enquire" data-pick="Combined retail space — 433 sqm">Discuss this combination</a></div>
   </div>
   <p class="note">Combining units does not change their approved licensing or permitted use.</p>
 </div></section>
 
 <section id="location"><div class="wrap">
   <div class="head"><h2>Positioned in Mivida Boulevard</h2></div>
-  <address class="addr" style="font-style:normal">Building 5B, Parcel 38<br>Gate 1 — Road 90<br>Fifth Settlement, New Cairo, Egypt</address>
+  <address class="addr" style="font-style:normal">Mivida Boulevard<br>Gate 1 — Road 90<br>Fifth Settlement, New Cairo, Egypt</address>
   <div class="loc">
     <figure><img loading="lazy" src="images/loc-streetscape.webp" width="1100" height="733" alt="Mivida Boulevard roundabout and residential buildings"><figcaption>Boulevard streetscape</figcaption></figure>
     <figure><img loading="lazy" src="images/loc-building.webp" width="1024" height="682" alt="Corner residential building with ground-floor commercial frontage"><figcaption>Commercial building exterior</figcaption></figure>
@@ -172,7 +172,7 @@ dl{display:grid;grid-template-columns:auto 1fr;gap:8px 24px;margin:20px 0;font-s
       <label>Mobile number *<input name="mobile" type="tel" required autocomplete="tel" inputmode="tel" placeholder="01X XXXX XXXX" maxlength="20"></label>
       <label class="full">Email address<input name="email" type="email" autocomplete="email" maxlength="120"></label>
       <label>Interested unit<select name="unit" id="us">
-        <option>Restaurant space G-05 — 396 sqm</option><option>Restaurant space G-06 — 351 sqm</option><option>Retail space G-09 — 224 sqm</option><option>Retail space G-10 — 209 sqm</option>
+        <option>Restaurant space — 396 sqm</option><option>Restaurant space — 351 sqm</option><option>Retail space — 224 sqm</option><option>Retail space — 209 sqm</option>
         <option>Combined restaurant space — 747 sqm</option><option>Combined retail space — 433 sqm</option><option>Multiple units / not sure yet</option></select></label>
       <label>Buyer profile<select name="profile"><option>Investor</option><option>Business owner</option><option>Restaurant operator</option><option>Retail brand</option><option>Other</option></select></label>
       <label class="full">Preferred contact time<input name="time" placeholder="e.g. weekdays after 4 pm" maxlength="80"></label>
@@ -233,26 +233,26 @@ const byId=id=>U.find(x=>x.id===id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 document.getElementById('grid').innerHTML=U.map((u,k)=>{const p=byId(u.pair);return `<article class="card">
-<img loading="lazy" src="images/${u.im}.webp" width="720" height="900" alt="${u.c} ${u.id}, ${u.g} sqm, ground-floor frontage at Mivida Boulevard">
-<div class="cb"><div class="cat">${u.c} · ${u.id}</div><h3 class="num">${u.g} sqm <small>gross</small></h3><div class="pr num">${u.p}</div>
-<p class="zone">${u.z}. Combinable with ${p.id} — combined gross area ${u.g+p.g} sqm.</p>
+<img loading="lazy" src="images/${u.im}.webp" width="720" height="900" alt="${u.c}, ${u.g} sqm, ground-floor frontage at Mivida Boulevard">
+<div class="cb"><div class="cat">${u.c}</div><h3 class="num">${u.g} sqm <small>gross</small></h3><div class="pr num">${u.p}</div>
+<p class="zone">${u.z}. Combinable with ${p.g} sqm — combined gross area ${u.g+p.g} sqm.</p>
 <button class="btn" type="button" data-k="${k}">View unit details</button>
 <p class="pn">Price negotiable for serious buyers following a property inspection.</p></div></article>`}).join('');
 
 const dg=document.getElementById('dg'), us=document.getElementById('us');
 function pickUnit(text){[...us.options].forEach(o=>{if(o.text===text)us.value=o.text})}
 document.getElementById('grid').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;const u=U[b.dataset.k],p=byId(u.pair);
- dg.innerHTML=`<div class="md"><img src="images/${u.im}.webp" alt="${u.c} ${u.id} frontage at Mivida Boulevard"><div class="mb"><button class="x" type="button" aria-label="Close">×</button>
-<div class="cat">${u.c} · ${u.id}</div><h3 class="num">${u.g} sqm</h3>
+ dg.innerHTML=`<div class="md"><img src="images/${u.im}.webp" alt="${u.c} frontage at Mivida Boulevard"><div class="mb"><button class="x" type="button" aria-label="Close">×</button>
+<div class="cat">${u.c}</div><h3 class="num">${u.g} sqm</h3>
 <dl><dt>Price</dt><dd>${u.p}</dd><dt>Gross area</dt><dd>${u.g} sqm</dd><dt>Internal area</dt><dd>${u.i} sqm</dd><dt>Outdoor area</dt><dd>${u.o}</dd><dt>Commercial license</dt><dd>${u.lic}</dd><dt>Location</dt><dd>${u.z}</dd><dt>Frontage</dt><dd>${u.fr}</dd><dt>Delivery</dt><dd>Core &amp; Shell</dd><dt>Ownership</dt><dd>Freehold</dd></dl>
-<ul>${u.f.map(x=>`<li>${x}</li>`).join('')}<li>Combinable with ${p.id} (${p.g} sqm) — combined gross area ${u.g+p.g} sqm</li></ul>
+<ul>${u.f.map(x=>`<li>${x}</li>`).join('')}<li>Combinable with ${p.g} sqm — combined gross area ${u.g+p.g} sqm</li></ul>
 <p style="font-size:14px;margin:16px 0">${u.r?'Power, HVAC, hood ventilation, water and drainage specifications are available on request. The grease interceptor is not included and must be supplied by the buyer.':'Technical specifications are available on request.'}</p>
 <p style="font-size:12px;color:var(--mu);margin-bottom:20px">Photograph shows the Mivida Boulevard commercial frontage and is indicative.</p>
-<a class="btn" href="#enquire" data-unit="${u.id}">Enquire about this unit</a></div></div>`;
+<a class="btn" href="#enquire" data-unit="— ${u.g} sqm">Enquire about this unit</a></div></div>`;
  dg.showModal()});
 dg.addEventListener('click',e=>{
  if(e.target===dg||e.target.closest('.x')){dg.close();return}
- const a=e.target.closest('[data-unit]');if(a){const o=[...us.options].find(o=>o.text.includes(a.dataset.unit));if(o)us.value=o.text;dg.close()}});
+ const a=e.target.closest('[data-unit]');if(a){const o=[...us.options].find(o=>o.text.endsWith(a.dataset.unit));if(o)us.value=o.text;dg.close()}});
 document.querySelectorAll('[data-pick]').forEach(a=>a.addEventListener('click',()=>pickUnit(a.dataset.pick)));
 
 const nv=document.getElementById('nav');addEventListener('scroll',()=>nv.classList.toggle('s',scrollY>60),{passive:true});
