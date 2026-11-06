@@ -225,10 +225,11 @@ const CONFIG = {
 const R=["Direct Boulevard frontage","Food & Beverage (FOOD / HOT) license","Core & Shell delivery"],
       T=["Main road frontage","Mivida Walk frontage","Commercial / Retail license","Core & Shell delivery"];
 const U=[
- {id:"G-05",c:"Restaurant Space",g:396,i:279,o:"72.9 sqm",p:"EGP 151,000,000",z:"Restaurant Zone",im:"g05",lic:"Food & Beverage (FOOD / HOT)",fr:"Direct Mivida Boulevard main street, Gate 1",pair:"G-06",f:[...R,"North and East exposure"],r:1},
- {id:"G-06",c:"Restaurant Space",g:351,i:247,o:"48.9 sqm",p:"EGP 134,000,000",z:"Restaurant Zone",im:"g06",lic:"Food & Beverage (FOOD / HOT)",fr:"Direct Mivida Boulevard main street, Gate 1",pair:"G-05",f:[...R],r:1},
- {id:"G-09",c:"Retail Space",g:224,i:158,o:"Not available",p:"EGP 84,000,000",z:"LineShop Zone",im:"g09",lic:"Commercial / Retail",fr:"Mivida Boulevard, Gate 1",pair:"G-10",f:[...T]},
- {id:"G-10",c:"Retail Space",g:209,i:147,o:"Not available",p:"EGP 78,375,000",z:"LineShop Zone",im:"g10",lic:"Commercial / Retail",fr:"Mivida Boulevard, Gate 1",pair:"G-09",f:[...T]}];
+ {id:"G-05",c:"Restaurant Space",g:396,i:279,o:"72.9 sqm",p:"EGP 149,000,000",z:"Restaurant Zone",im:"g05",lic:"Food & Beverage (FOOD / HOT)",fr:"Direct Mivida Boulevard main street, Gate 1",pair:"G-06",f:[...R,"North and East exposure"],r:1},
+ {id:"G-06",c:"Restaurant Space",g:351,i:247,o:"48.9 sqm",p:"EGP 131,000,000",z:"Restaurant Zone",im:"g06",lic:"Food & Beverage (FOOD / HOT)",fr:"Direct Mivida Boulevard main street, Gate 1",pair:"G-05",f:[...R],r:1},
+ {id:"G-09",c:"Retail Space",g:224,i:158,o:"Not available",p:"EGP 80,000,000",z:"LineShop Zone",im:"g09",lic:"Commercial / Retail",fr:"Mivida Boulevard, Gate 1",pair:"G-10",f:[...T]},
+ {id:"G-10",c:"Retail Space",g:209,i:147,o:"Not available",p:"EGP 75,000,000",z:"LineShop Zone",im:"g10",lic:"Commercial / Retail",fr:"Mivida Boulevard, Gate 1",pair:"G-09",f:[...T]}
+];
 const byId=id=>U.find(x=>x.id===id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
